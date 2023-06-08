@@ -31,7 +31,7 @@ class User(models.Model):
 class Remark(models.Model):
     user = models.CharField(max_length=100)
     customer_id = models.IntegerField()
-    datetime = models.DateTimeField(auto_now_add=True)
+    datetime = models.DateTimeField(default=datetime.now)
     reason = models.TextField()
 
 ##########    Customer Model  ##################################################################

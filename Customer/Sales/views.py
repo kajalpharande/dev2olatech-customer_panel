@@ -17,28 +17,60 @@ from .models import User, Remark
 
 # @login_required
 
+# def create_remark(request):
+#     if request.method == 'POST':
+#         reason = request.POST.get('reason')
+#         id = request.POST.get('id')
+#         username = request.session['username']
+#         print(username)
+#         date = request.POST.get('datetime')
+#         remark = Remark(user=username, reason=reason, customer_id = id,datetime=date)
+
+#         remark.save()
+#         return redirect(show_details)
+
+#     return render(request, 'customer_detail.html')
+
+# def show_details(request):
+#      customer = get_object_or_404(Customer, pk=id)
+#      id = customer.id
+#      remark = Remark.objects.filter(customer_id=id)
+#      print(remark)
+#      context = {
+#          'customer': customer,
+#          'remark': remark,
+#          }
+#      return render(request, 'customer_detail.html', context)
 def create_remark(request):
     if request.method == 'POST':
+        # Retrieve form data
         reason = request.POST.get('reason')
         id = request.POST.get('id')
         username = request.session['username']
-        print(username)
-        remark = Remark(user=username, reason=reason, customer_id = id)
+        date = request.POST.get('datetime')
 
+        # Save the remark
+        remark = Remark(user=username, reason=reason, customer_id=id, datetime=date)
         remark.save()
-        customer = get_object_or_404(Customer, pk=id)
-        id = customer.id
-        remark = Remark.objects.filter(customer_id=id)
-        print(remark)
-        context = {
-            'customer': customer,
-            'remark': remark,
-        }
-        return render(request, 'customer_detail.html', context)
+
+        # Redirect back to the show_details view with the customer id as a query parameter
+        return redirect(f'/show_details/?id={id}')
 
     return render(request, 'customer_detail.html')
 
+def show_details(request):
+    # Retrieve the customer id from the query parameter
+    id = request.GET.get('id')
+    print(id)
+    # Retrieve the customer and remarks
+    customer = get_object_or_404(Customer, pk=id)
+    remark = Remark.objects.filter(customer_id=id)
 
+    context = {
+        'customer': customer,
+        'remark': remark,
+    }
+    return render(request, 'customer_detail.html', context)
 
 ################ Add Customer data    ########################################
 
