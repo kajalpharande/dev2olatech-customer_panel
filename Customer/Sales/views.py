@@ -41,6 +41,7 @@ from .models import User, Remark
 #          'remark': remark,
 #          }
 #      return render(request, 'customer_detail.html', context)
+
 def create_remark(request):
     if request.method == 'POST':
         # Retrieve form data
@@ -61,7 +62,7 @@ def create_remark(request):
 def show_details(request):
     # Retrieve the customer id from the query parameter
     id = request.GET.get('id')
-    print(id)
+   
     # Retrieve the customer and remarks
     customer = get_object_or_404(Customer, pk=id)
     remark = Remark.objects.filter(customer_id=id)
@@ -188,7 +189,7 @@ def Edit(request):
 def Delete(request):
     if request.method == "POST":
         list_id = request.POST.getlist('id[]')
-        print(list_id)
+       
         for i in list_id:
             customers = Customer.objects.filter(id=i).first()
             customers.delete()
@@ -204,7 +205,7 @@ def Customer_detail(request, pk):
     customer = get_object_or_404(Customer, pk=pk)
     id = customer.id
     remark = Remark.objects.filter(customer_id=id)
-    print(remark)
+   
     context = {
         'customer': customer,
         'remark': remark,
@@ -267,13 +268,8 @@ def logoutUser(request):
 def signup(request):
     if request.method == 'POST':
         username = request.POST['username']
-        print(username)
-        email = request.POST['email']
-        print(email)
         password = request.POST['password']
-        print(password)
-        user = User(username=username, email=email, password=password)
-        print(user)
+        user = User(username=username,  password=password)
         user.save()
         return redirect('login_page')
     return render(request, 'signup.html')

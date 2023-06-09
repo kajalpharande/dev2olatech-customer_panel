@@ -15,9 +15,11 @@
               src="{% static '/Images/ola.png' %}"
               style=" margin-left: 10.5%; margin-bottom: 0px; margin-top: 5%; height: 130px; max-width: fit-content;"></a>
       <h5 style="margin-top: 0px; margin-left: 1700px;"></h5>
+      <h1 style="color: rgb(226, 64, 43);">Sales Lead</h1>
+
   </div>
-  <div style="margin-left: 480px;">
-    <h2 style="color: brown;">Sign Up</h2>
+  <div style="margin-left: 480px;"><br>
+    <h3 style="color: brown;">Sign Up</h3>
 {% if error_message %}
 <p>{{ error_message }}</p>
 {% endif %}
@@ -26,8 +28,7 @@
     <label for="username">Username:</label>
     <br>
     <input type="text" id="username" name="username" required><br>
-    <label for="email">Email:</label><br>
-    <input type="email" id="email" name="email" required><br>
+   
     <label for="password">Password:</label><br>
     <input type="password" id="password" name="password" required><br><br>
     <!-- <label for="confirm_password">Confirm Password:</label><br>

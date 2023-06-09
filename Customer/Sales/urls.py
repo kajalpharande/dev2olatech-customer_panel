@@ -12,7 +12,7 @@ urlpatterns = [
 
 
     #  # START LOGIN URLS
-    path('login', views.loginPage, name='login_page'),
+    path('', views.loginPage, name='login_page'),
     path('home/', views.home, name='home'),
     path('logout/', views.logoutUser, name='logout'),
     # END LOGIN URLS
@@ -20,7 +20,7 @@ urlpatterns = [
 
     ######## sign in and sign up url #######
 
-    path('', views.signup, name='signup'),
+    path('signup', views.signup, name='signup'),
     # path('signin/', views.signin, name='signin'),
     
     path('create-remark/', views.create_remark, name='create_remark'),
