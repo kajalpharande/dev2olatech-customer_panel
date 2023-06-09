@@ -31,7 +31,7 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.2/moment.min.js"></script>
     <script src="//cdn.datatables.net/datetime/1.4.0/js/dataTables.dateTime.min.js"></script>
 
-
+<!-- 
     <div class="container">
         <div class="row">
             <div class="text-right">
@@ -39,7 +39,14 @@
             </div>
         </div>
 
-    </div>
+    </div> -->
+
+<style>
+  a {
+    color:black;
+  }
+</style>
+
 </head>
 
 <body>
@@ -73,7 +80,7 @@
     <br><br>
     <table class="table table-striped table-hover" id="table">
         <thead>
-            <tr style="background-color:rgb(177, 208, 244);color:rgb(18, 16, 16);">
+            <tr style="background-color:rgb(198, 214, 233);color:rgb(18, 16, 16);">
                 <th>
                     <span class="custom-checkbox">
                         <input type="checkbox" id="selectAll">
@@ -101,27 +108,25 @@
         <tbody>
             {% for customer in customers %}
             <tr id="{{customer.id}}">
-                    
                 <td>
                     <input type="checkbox" name="change_id[]" id="delete_product" value="{{customer.id}}">
 
-                
                 </td>
-                <td><a href="{% url 'customer_detail' customer.id %}">{{ customer.id}}</a></td>
+                <td><a style="color: black;"  href="{% url 'customer_detail' customer.id %}">{{ customer.id}}</a></td>
 
-                <td><a href="{% url 'customer_detail' customer.id %}">{{ customer.company_name }}</a></td>
-                <td><a href="{% url 'customer_detail' customer.id %}">{{ customer.type_of_client }}</a></td>
-                <td><a href="{% url 'customer_detail' customer.id %}">{{ customer.name }}</a></td>
-                <td><a href="{% url 'customer_detail' customer.id %}">{{ customer.contact_detail }}</a></td>
-                <td><a href="{% url 'customer_detail' customer.id %}">{{ customer.mail_id }}</a></td>
-                <td><a href="{% url 'customer_detail' customer.id %}">{{ customer.nature_of_business }}</a></td>
-                <td><a href="{% url 'customer_detail' customer.id %}">{{ customer.meeting_date }}</a></td>
-                <td><a href="{% url 'customer_detail' customer.id %}">{{ customer.status_of_client }}</a></td>
-                <td><a href="{% url 'customer_detail' customer.id %}">{{ customer.next_meeting_date }}</a></td>
-                <td><a href="{% url 'customer_detail' customer.id %}">{{ customer.package_sold }}</a></td>
-                <td><a href="{% url 'customer_detail' customer.id %}">{{ customer.amount }}</a></td>
-                <td><a href="{% url 'customer_detail' customer.id %}">{{ customer.activation_date }}</a></td>
-                <td><a href="{% url 'customer_detail' customer.id %}">{{ customer.renewal_date }}</a></td>
+                <td><a style="color: black;" href="{% url 'customer_detail' customer.id %}">{{ customer.company_name }}</a></td>
+                <td><a style="color: black;" href="{% url 'customer_detail' customer.id %}">{{ customer.type_of_client }}</a></td>
+                <td><a style="color: black;" href="{% url 'customer_detail' customer.id %}">{{ customer.name }}</a></td>
+                <td><a style="color: black;" href="{% url 'customer_detail' customer.id %}">{{ customer.contact_detail }}</a></td>
+                <td><a style="color: black;" href="{% url 'customer_detail' customer.id %}">{{ customer.mail_id }}</a></td>
+                <td><a style="color: black;" href="{% url 'customer_detail' customer.id %}">{{ customer.nature_of_business }}</a></td>
+                <td><a style="color: black;" href="{% url 'customer_detail' customer.id %}">{{ customer.meeting_date }}</a></td>
+                <td><a style="color: black;" href="{% url 'customer_detail' customer.id %}">{{ customer.status_of_client }}</a></td>
+                <td><a style="color: black;" href="{% url 'customer_detail' customer.id %}">{{ customer.next_meeting_date }}</a></td>
+                <td><a style="color: black;" href="{% url 'customer_detail' customer.id %}">{{ customer.package_sold }}</a></td>
+                <td><a style="color: black;" href="{% url 'customer_detail' customer.id %}">{{ customer.amount }}</a></td>
+                <td><a style="color: black;" href="{% url 'customer_detail' customer.id %}">{{ customer.activation_date }}</a></td>
+                <td><a style="color: black;" href="{% url 'customer_detail' customer.id %}">{{ customer.renewal_date }}</a></td>
                 <!-- <td>
                     <a href="#editCustomerModal-{{customer.id}}" class="edit" data-toggle="modal"><i
                             class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
@@ -247,122 +252,7 @@
     </div>
   </div>
 
-    <!-- Edit Customer -->
-
-    <!-- {% for customer in customers %}
-    <div id="editCustomerModal-{{customer.id}}" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content" style="width: 700px; position: relative; right: 11%; bottom: 50%;">
-                <form action="{% url 'update' customer.id %}" method="post">
-                    {% csrf_token %}
-
-                    <div class="modal-header">
-                        <h4 class="modal-title">Edit</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                      </div>
-                      <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
-                          <div class="form-group">
-                            <label>ID</label>
-                            <input name="id" value="{{customer.id}}" type="text" class="form-control">
-                          </div>
-                          <div class="form-group">
-                            <label>Company Name</label>
-                            <input name="company_name" type="text" value="{{customer.company_name}}" class="form-control" required />
-                          </div>
-                          <div class="form-group">
-                            <label>Type of Client </label>
-                            <select name="type_of_client" type="text" class="form-control" aria-label="Default select example"
-                            aria-invalid="false">
-                            <option value="">Select Option</option>
-          
-                            <option value="New Client">New Client</option>
-                            <option value="Existing Client">Existing Client</option>
-                            <option value="Decline Client">Decline Client</option>
-                          </select>
-                          </div>
-                          <div class="form-group">
-                            <label>Name</label>
-                            <input name="name" type="text"  value="{{customer.name}}" class="form-control" required>
-
-                          </div>
-                          <div class="form-group">
-                            <label>Contact Detail</label>
-                            <input name="contact_detail" type="text" value="{{customer.contact_detail}}" class="form-control">
-                          </div>
-                          <div class="form-group">
-                            <label>Mail ID</label>
-                            <input name="mail_id" type="text" value="{{customer.mail_id}}" class="form-control">
-                          </div>
-                          <div class="form-group">
-                            <label for="bday">Meeting Date</label>
-                            <input class="form-control" type="date" id="meeting_date" value="{{ customer.meeting_date|date:'Y-m-d' }}" name="meeting_date" required>
-                          </div>
-                          
-                          <div class="form-group">
-                            <label for="bday">Next Meeting Date</label>
-                            <input class="form-control" type="date" id="next_meeting_date" value="{{ customer.next_meeting_date|date:'Y-m-d' }}" name="next_meeting_date" required>
-                            <span class="validity"></span>
-                          </div>
-                          
-                      </div>
-                      <div class="modal-body" style="width: 330px; display: inline-block; position: relative; bottom: 60px;">
-                      
-
-                           <div class="form-group">
-                            <label>Nature of Business</label>
-                            <select name="nature_of_business" type="text" class="form-control" aria-label="Default select example"
-                            aria-invalid="false">
-                            <option value="">Select Option</option>
-            
-                            <option value="Manufacturer">Manufacturer</option>
-                            <option value="Supplier">supplier</option>
-                            <option value="Trader">Trader</option>
-                            <option value="Retail">Retail</option>
-              
-                            </select>            
-                          </div>
-                          <div class="form-group">
-                            <label>Status of Client</label>
-                            <select name="status_of_client" type="text" class="form-control" aria-label="Default select example"
-                                          aria-invalid="false">
-                              <option value="">Select Option</option>
-
-                              <option value="Prospect">Prospect</option>
-                              <option value="Hot Prospect">Hot Prospect</option>
-                               <option value="Not Interested">Not Interested</option>
-  
-                             </select>    
-                          </div>
-                          <div class="form-group">
-                            <label>Package Sold</label>
-                            <input name="package_sold" value="{{customer.package_sold}}" type="text" class="form-control">
-                          </div>
-                          <div class="form-group">
-                            <label>Amount</label>
-                            <input name="amount" type="text" value="{{customer.amount}}" class="form-control">
-                          </div>
-                              <div class="form-group">
-                            <label for="bday">Activation Date</label>
-                            <input class="form-control" type="date" id="activation_date" value="{{ customer.activation_date|date:'Y-m-d' }}" name="activation_date" required>
-                          
-                          </div>
-                          <div class="form-group">
-                            <label for="bday">Renewal Date</label>
-                            <input class="form-control" type="date" id="renewal_date"  value="{{ customer.renewal_date|date:'Y-m-d' }}"name="renewal_date" required>
-                             
-                          </div>
-                        </div>
-                      <div class="modal-footer">
-                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                        <input type="submit" class="btn btn-info" value="Update">
-
-                      </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-    {% endfor %} -->
+    
     
 
     <!-- Delete Customer -->
