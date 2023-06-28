@@ -10,7 +10,13 @@ import json
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import check_password
 from django.utils import timezone
-from .models import User, Remark
+from .models import Users, Remark
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.urls import reverse
+from django.http import JsonResponse
+
+
 
 
 
@@ -21,7 +27,7 @@ from .models import User, Remark
 #     if request.method == 'POST':
 #         reason = request.POST.get('reason')
 #         id = request.POST.get('id')
-#         username = request.session['username']
+#         usersname = request.session['usersname']
 #         print(username)
 #         date = request.POST.get('datetime')
 #         remark = Remark(user=username, reason=reason, customer_id = id,datetime=date)
@@ -59,6 +65,7 @@ def create_remark(request):
 
     return render(request, 'customer_detail.html')
 
+
 def show_details(request):
     # Retrieve the customer id from the query parameter
     id = request.GET.get('id')
@@ -73,7 +80,7 @@ def show_details(request):
     }
     return render(request, 'customer_detail.html', context)
 
-################ Add Customer data    ########################################
+################         Add Customer data    ########################################
 
 # @login_required(login_url='login_page')
 def customer_list(request):
@@ -240,13 +247,13 @@ def loginPage(request):
         request.session['username'] = username
         password = request.POST['password']
         try:
-            user = User.objects.get(username=username)
+            user = Users.objects.get(username=username)
             if password == user.password:
-                # Authentication successful, proceed with further actions
-                return redirect('customer_list')  # Replace 'customer_list' with your desired URL or view name
+            
+                return redirect('customer_list')  
             else:
                 error_message = "Invalid username or password."
-        except User.DoesNotExist:
+        except Users.DoesNotExist:
             error_message = "Invalid username or password."
         
         return render(request, 'login.html', {'error_message': error_message})
@@ -255,22 +262,239 @@ def loginPage(request):
 
 
 
+# from django.contrib.auth.hashers import check_password
+
+# def loginPage(request):
+#     if request.method == 'POST':
+#         username = request.POST['username']
+#         request.session['username'] = username
+#         password = request.POST['password']
+#         try:
+#             users = User.objects.filter(username=username)
+#             if users.exists():
+#                 user = users.first()
+#                 if check_password(password, user.password):
+#                     # Authentication successful, proceed with further actions
+#                     return redirect('customer_list')  # Replace 'customer_list' with your desired URL or view name
+#             error_message = "Invalid username or password."
+#         except User.DoesNotExist:
+#             error_message = "Invalid username or password."
+
+#         return render(request, 'login.html', {'error_message': error_message})
+
+#     return render(request, 'login.html')
+
+
 
 
 
 def logoutUser(request):
     logout(request)
-    return render(request,'login.html')
+    return redirect("login_page")
 
 
-########### sign up ####################################
+###########################    sign up    ###################################
+
+# def signup(request):
+#     if request.method == 'POST':
+#         username = request.POST['username']
+#         password = request.POST['password']
+#         user = User(username=username,  password=password)
+#         user.save()
+#         return redirect('login_page')
+#     return render(request, 'signup.html')
+
+
+# def signup(request):
+#     if request.method == 'POST':
+#         username = request.POST['username']
+#         password = request.POST['password']
+        
+#         # Check if the username already exists
+#         if User.objects.filter(username=username).exists():
+#             error_message = "Username already exists."
+#             return render(request, 'signup.html', {'error_message': error_message})
+        
+#         # Create a new user
+#         user = User(username=username, password=password)
+#         user.save()
+#         return redirect('login_page')
+    
+#     return render(request, 'signup.html')
 
 def signup(request):
     if request.method == 'POST':
-        username = request.POST['username']
+        email = request.POST['username']
         password = request.POST['password']
-        user = User(username=username,  password=password)
+
+        # Extract the username from the email
+        username = email.split('@')[0]
+
+        # Check if the email is from the allowed domain
+        if not email.endswith('@olatechs.com'):
+            error_message = "Only users with Olatech email addresses are allowed to register."
+            return render(request, 'signup.html', {'error_message': error_message})
+
+        # Check if the username already exists
+        if Users.objects.filter(username=username).exists():
+            error_message = "Username already exists."
+            return render(request, 'signup.html', {'error_message': error_message})
+
+        # Create a new user
+        user = Users(username=email, password=password)
         user.save()
         return redirect('login_page')
+
     return render(request, 'signup.html')
 
+
+
+def check_email_exists(request):
+    if request.method == 'POST':
+        email = request.POST.get("username")
+        
+        # Check if the email exists in the database
+        try:
+            user = Users.objects.get(username=email)
+        except Users.DoesNotExist:
+            messages.error(request, "Email address does not exist.")
+            return redirect('check_email_exists')
+        
+        return redirect('confirm_password', id=user.id)
+    
+    return render(request, 'forgot_password.html')
+
+
+
+def confirm_password(request,id):
+    print(id)
+    if request.method == 'POST':
+        # Retrieve the user object using the user ID from session
+     
+        
+        try:
+            user = Users.objects.get(id=id)
+        except Users.DoesNotExist:
+            messages.error(request, "Invalid password reset link.")
+            return redirect('forgot_password')
+        
+        # Get the new password and confirm password from the form
+        new_password = request.POST.get('new_password')
+        confirm_password = request.POST.get('confirm_password')
+        
+        if new_password == confirm_password:
+            # Set the new password for the user
+            user.password=new_password
+            user.save()
+            
+            # Clear the reset UID and token from session
+           
+            
+            messages.success(request, "Password reset successful. You can now log in with your new password.")
+            return redirect('login_page')
+        else:
+            messages.error(request, "Passwords do not match.")
+    
+    return render(request, 'confirm_password.html')
+
+
+
+############### Branch ###############################################
+
+def branch_list(request):
+    branch = cl_Branch.objects.all()
+    return render(request, 'branch.html', {'branches': branch})
+
+
+
+def add_branch(request):
+    if request.method == 'POST':
+        branch_name = request.POST.get('branch_name')
+        branch = cl_Branch(branch_name=branch_name)
+        branch.save()
+        return redirect('branch_list')
+    branches = cl_Branch.objects.all()  # Fetch all branches
+    return render(request, 'branch.html', {'branches': branches})
+
+
+##############  RM ###############################
+def rm_list(request):
+    rm = cl_RM.objects.all()
+    branches = cl_Branch.objects.all()  # Fetch all branches
+
+    return render(request, 'rm.html', {'rm1': rm, 'branches': branches})
+
+
+def add_rm(request):
+    if request.method == 'POST':
+        rm_name = request.POST.get('rm_name')
+        # branch_name = request.POST.get('branch_name')
+        # branch = cl_Branch.objects.filter(branch_name=branch_name).first()
+        branch_list = cl_Branch.objects.filter(branch_name=request.POST.get('branch_list')).first()
+
+       
+
+
+        rm = cl_RM(rm_name=rm_name, branch_list=branch_list)
+        rm.save()
+        return redirect('rm_list')
+    rm1 = cl_RM.objects.all()  # Fetch all RM
+    return render(request, 'rm.html', {'rm1': rm1})
+
+
+######################   Executive  ############################################################
+
+def executive_list(request):
+    executives = cl_Executive.objects.all()
+    branches = cl_Branch.objects.all()  # Fetch all branches
+    rm1 = cl_RM.objects.all()
+
+
+    return render(request, 'executive.html', {'executives': executives,'branches':branches,'rm1':rm1})
+
+
+def add_executive(request):
+    if request.method == 'POST':
+        ex_name = request.POST.get('ex_name')
+        # rm_list = request.POST.get('rm_list')
+
+        branch_list = cl_Branch.objects.filter(branch_name=request.POST.get('branch_list')).first()
+        rm_list = cl_RM.objects.filter(rm_name=request.POST.get('rm_list')).first()
+
+
+        executive = cl_Executive(ex_name=ex_name, branch_list=branch_list, rm_list=rm_list)
+        executive.save()
+
+        return redirect('executive_list')
+
+    branches = cl_Branch.objects.all()
+    rm1 = cl_RM.objects.all()
+    executives = cl_Executive.objects.all()
+
+    return render(request, 'executive.html', {'branches': branches, 'rms': rm1,'executives':executives})
+
+
+
+
+
+# def get_branch_info(request,branch):
+#     branch_name = cl_RM.objects.get(branch_list = branch)
+
+    
+#     exe_info = {
+#         'rm': branch_name.rm_name,
+    
+#         }
+#     print(branch_name)
+#     return JsonResponse(exe_info)
+
+def get_branch_info(request, branch_id):
+    try:
+        branch = cl_RM.objects.get(pk=branch_id)
+        exe_info = {
+            'rm': branch.rm_name,
+        }
+        return JsonResponse(exe_info)
+    except cl_RM.DoesNotExist:
+        return JsonResponse({'error': 'Branch not found'}, status=404)
+    

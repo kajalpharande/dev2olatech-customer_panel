@@ -33,11 +33,17 @@
     <input type="password" id="password" name="password" required><br><br>
     <!-- <label for="confirm_password">Confirm Password:</label><br>
     <input type="password" id="confirm_password" name="confirm_password" required><br><br>  -->
-    <button type="submit" class="btn btn-primary"    >Sign Up</button><br>
+    <button type="submit" class="btn btn-primary">Sign Up</button><br>
 </form>
     <p>Already have an account? <a href="{% url 'login_page' %}">Sign In</a></p>
+    <a href="{% url 'check_email_exists' %}" class="btn btn-primary">Forgot Password</a>
+
+
+
 
   </div>
+ 
+
   
 </body>
 </html>

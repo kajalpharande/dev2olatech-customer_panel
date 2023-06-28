@@ -17,9 +17,9 @@ from django.utils import timezone
 
 ####################      Sign Up     ##############################################################
 
-class User(models.Model):
+class Users(models.Model):
     username = models.CharField(max_length=100)
-    email = models.EmailField()
+    email = models.EmailField(default="abc@olatechs.com")
     password = models.CharField(max_length=100)
 
     def __str__(self):
@@ -41,6 +41,8 @@ class Customer(models.Model):
         ('new', 'New Client'),
         ('existing', 'Existing Client'),
         ('decline', 'Decline Client'),
+        ('po', 'PO Recieved'),
+
     )
 
     BUSINESS_TYPES = (
@@ -76,3 +78,27 @@ class Customer(models.Model):
         db_table = 'Customer'
 
 
+
+class cl_Branch(models.Model):
+    branch_name = models.CharField(max_length=100)
+
+    class Meta:
+        db_table ='Branch'
+
+
+
+class cl_RM(models.Model):
+    rm_name = models.CharField(max_length=100)
+    branch_list = models.ForeignKey ( cl_Branch, on_delete=models.CASCADE, null=True, blank=True) 
+
+    class Meta:
+        db_table ='RM'
+
+
+
+class cl_Executive(models.Model):
+    ex_name = models.CharField(max_length=100)
+    branch_list = models.ForeignKey ( cl_Branch, on_delete=models.CASCADE, null=True, blank=True) 
+    rm_list =  models.CharField(max_length=100)
+    class Meta:
+        db_table ='executive'

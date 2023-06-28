@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 
+
 urlpatterns = [
     path('customer_list', views.customer_list, name='customer_list'),
     path('show_details/', views.show_details, name='show_details'),
@@ -8,6 +9,19 @@ urlpatterns = [
     path('update/<str:id>/', views.update_customer, name='update'),
     path('delete/', views.Delete, name='delete'),
     path('customer/<int:pk>/',views.Customer_detail, name='customer_detail'),
+    path('add_branch/',views.add_branch, name='add_branch'),
+    path('branch_list', views.branch_list, name='branch_list'),
+    path('add_rm/',views.add_rm, name='add_rm'),
+    path('rm_list', views.rm_list, name='rm_list'),
+    path('executive_list/', views.executive_list, name='executive_list'),
+    path('add_executive/', views.add_executive, name='add_executive'),
+    path('get_branch_info/<int:branch_id>/', views.get_branch_info, name='get_branch_info'),
+
+
+
+
+
+
 
 
 
@@ -20,25 +34,16 @@ urlpatterns = [
 
     ######## sign in and sign up url #######
 
-    path('signup', views.signup, name='signup'),
+    path('signup/', views.signup, name='signup'),
     # path('signin/', views.signin, name='signin'),
     
     path('create-remark/', views.create_remark, name='create_remark'),
+      ################ Forgate password ############
+    path('check_email/', views.check_email_exists, name='check_email_exists'),
+    path('confirm_password/<int:id>/', views.confirm_password, name='confirm_password'),
 
 
  
-
-################          user Roles   ######################################################################
-
-
-#   path('logs/', views.view_logs, name='view_logs'),
-#     path('logs/delete/', views.LogsDelete, name='logs_delete'),
-#     path('roles/', views.role_display, name='role_display'),
-#     path('roles/add/', views.role_add, name='role_add'),
-#     path('users/', views.user_display, name='user_display'),
-#     path('users/new/', views.add_new_user, name='add_new_user'),
-#     path('users/<int:id>/edit/', views.user_edit, name='user_edit'),
-#     path('users/get_Existing_user/', views.get_Existing_user, name='get_Existing_user'),
 
 
 
