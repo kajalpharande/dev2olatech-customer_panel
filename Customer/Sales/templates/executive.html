@@ -92,7 +92,7 @@
             <tr>
                 <td>{{i.id}}</td>
                 <td>{{i.ex_name}}</td>
-                <td>{{i.rm_list.rm_name }}</td>
+                <td>{{i.rm_name }}</td>
                 <td>{{i.branch_list.branch_name}}</td>
 
                
@@ -125,7 +125,7 @@
                     <select class="form-control" id ="branch" name="branch_list">
                         <option selected>Select Branch</option>
                         {% for i in rm1 %}
-                        <option value="{{ i.branch_name }}">{{ i.branch_list.branch_name }}</option>
+                        <option value="{{ i.branch_list }}">{{ i.branch_list}}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -160,7 +160,7 @@
                 <div class="form-group">
                     <label class="control-label"><b> RM : </b><span
                             class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="rm_list" name="rm_list">
+                        <input type="text" class="form-control" id="rmi_name" name="rm_name">
 
               
                 </div>
@@ -178,34 +178,33 @@
   </div>
 
   <script>
-    // const branch = document.getElementById('branch');
-    // const rm_name = document.getElementById('rm_list');
+    const branchibranch = document.getElementById('branch');
+    const branchirm_name = document.getElementById('rmi_name');
 
-    // branch.addEventListener('change', () => {
-    //     console.log("its worked")
-    //   const selectedUser = branch.value;
-    //   fetch('/get_branch_info/${selectedUser}/')
-    //     .then(response => response.json())
-    //     .then(data => {
-    //         rm_name.value = data.rm;
-    //     });
-    // });
-    const branch = document.getElementById('branch');
-const rm_name = document.getElementById('rm_list');
+    branchibranch.addEventListener('change', () => {
+      const selectedUser = branchibranch.value;
+      fetch(`/get_branch_info/${selectedUser}`)
+        .then(response => response.json())
+        .then(data => {
+          branchirm_name.value = data.rm;
+        });
+    });
+// const branch = document.getElementById('branch');
+// const rm_name = document.getElementById('rmi_name');
 
-branch.addEventListener('change', () => {
-    const selectedUser = branch.value;
-    if (selectedUser) {
-        fetch(`/get_branch_info/${selectedUser}/`)
-            .then(response => response.json())
-            .then(data => {
-                rm_name.value = data.rm;
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-    }
-});
+// branch.addEventListener('change', () => {
+//     const selectedUser = branch.value;
+//     if (selectedUser) {
+//         fetch(`/get_branch_info/${selectedUser}/`)
+//             .then(response => response.json())
+//             .then(data => {
+//                 rm_name.value = data.rm;
+//             })
+//             .catch(error => {
+//                 console.error('Error:', error);
+//             });
+//     }
+// });
 
 
 </script>

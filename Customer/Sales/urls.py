@@ -15,7 +15,7 @@ urlpatterns = [
     path('rm_list', views.rm_list, name='rm_list'),
     path('executive_list/', views.executive_list, name='executive_list'),
     path('add_executive/', views.add_executive, name='add_executive'),
-    path('get_branch_info/<int:branch_id>/', views.get_branch_info, name='get_branch_info'),
+    path('get_branch_info/<str:branch>/', views.get_branch_info, name='get_branch_info'),
 
 
 

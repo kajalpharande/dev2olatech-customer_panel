@@ -430,7 +430,7 @@ def add_rm(request):
         rm_name = request.POST.get('rm_name')
         # branch_name = request.POST.get('branch_name')
         # branch = cl_Branch.objects.filter(branch_name=branch_name).first()
-        branch_list = cl_Branch.objects.filter(branch_name=request.POST.get('branch_list')).first()
+        branch_list = request.POST.get('branch_list')
 
        
 
@@ -459,10 +459,9 @@ def add_executive(request):
         # rm_list = request.POST.get('rm_list')
 
         branch_list = cl_Branch.objects.filter(branch_name=request.POST.get('branch_list')).first()
-        rm_list = cl_RM.objects.filter(rm_name=request.POST.get('rm_list')).first()
+        rm_name = request.POST.get('rm_name')
 
-
-        executive = cl_Executive(ex_name=ex_name, branch_list=branch_list, rm_list=rm_list)
+        executive = cl_Executive(ex_name=ex_name, branch_list=branch_list, rm_name=rm_name)
         executive.save()
 
         return redirect('executive_list')
@@ -477,24 +476,24 @@ def add_executive(request):
 
 
 
-# def get_branch_info(request,branch):
-#     branch_name = cl_RM.objects.get(branch_list = branch)
+def get_branch_info(request,branch):
+    branchi = cl_RM.objects.get(branch_list = branch)
 
     
-#     exe_info = {
-#         'rm': branch_name.rm_name,
+    branchi_info = {
+        'rm': branchi.rm_name,
     
-#         }
-#     print(branch_name)
-#     return JsonResponse(exe_info)
-
-def get_branch_info(request, branch_id):
-    try:
-        branch = cl_RM.objects.get(pk=branch_id)
-        exe_info = {
-            'rm': branch.rm_name,
         }
-        return JsonResponse(exe_info)
-    except cl_RM.DoesNotExist:
-        return JsonResponse({'error': 'Branch not found'}, status=404)
+    return JsonResponse(branchi_info)
+
+
+# def get_branch_info(request, branch_id):
+#     try:
+#         branch = cl_RM.objects.get(pk=branch_id)
+#         exe_info = {
+#             'rm': branch.rm_name,
+#         }
+#         return JsonResponse(exe_info)
+#     except cl_RM.DoesNotExist:
+#         return JsonResponse({'error': 'Branch not found'}, status=404)
     

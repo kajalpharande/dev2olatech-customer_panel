@@ -89,7 +89,7 @@ class cl_Branch(models.Model):
 
 class cl_RM(models.Model):
     rm_name = models.CharField(max_length=100)
-    branch_list = models.ForeignKey ( cl_Branch, on_delete=models.CASCADE, null=True, blank=True) 
+    branch_list = models.CharField(max_length=100) 
 
     class Meta:
         db_table ='RM'
@@ -99,6 +99,6 @@ class cl_RM(models.Model):
 class cl_Executive(models.Model):
     ex_name = models.CharField(max_length=100)
     branch_list = models.ForeignKey ( cl_Branch, on_delete=models.CASCADE, null=True, blank=True) 
-    rm_list =  models.CharField(max_length=100)
+    rm_name =  models.CharField(max_length=100)
     class Meta:
         db_table ='executive'
