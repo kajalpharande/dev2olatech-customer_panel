@@ -106,9 +106,11 @@ body {
 
 <body>
 
+<!-- Side-Nav -->
 <div class="side-navbar active-nav d-flex justify-content-between flex-wrap flex-column" id="sidebar">
   <ul class="nav flex-column text-white w-100"><br><br><br><br>
-<a href="{% url 'customer_list' %}" class="nav-link h3 text-white my-2">
+
+    <a href="{% url 'customer_list' %}" class="nav-link h3 text-white my-2">
    
     
     <li  class="nav-link">
@@ -131,7 +133,7 @@ body {
       <i class="bx bx-user-check"></i>
       <span class="mx-2">Manager</span>
     </li>
-  </a><br> 
+  </a><br>
   <a href="{% url 'executive_list' %}" class="nav-link h3 text-white my-2">
    
     
@@ -170,17 +172,17 @@ body {
   <nav class="navbar top-navbar navbar-light bg-light px-5">
     <a class="btn border-0" id="menu-btn"><i class="bx bx-menu"></i></a>
   </nav>
-<!-- Table Content -->
+  <!-- Table Content -->
     <div class="text-right">  <button type="button" class="btn btn-info dropdown-toggle" data-bs-toggle="dropdown"
 								aria-expanded="false">
 								Hello, {{ request.session.username }}
 							</button>
-     
-            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
-              Add 
-            </button>
+        <a href="#addRoleModal" class="btn btn-success" data-toggle="modal"><i class="material-icons"></i>
+            <span>Add </span></a>
             <a href="{% url 'logout' %}" class="btn btn-primary" data-toggle="modal"><i class="material-icons"></i>
               <span>Logout</span></a>
+
+            
     </div>
 
 <!-- 
@@ -201,32 +203,17 @@ body {
             <tr style="background-color:rgb(198, 214, 233);color:rgb(18, 16, 16);">
                 
                 <th>ID</th>
-                <th>Executive Name</th>
-                <th>Manager Name</th>
-                <th>Branch</th>
-                <th>Username</th>
-                <th>Password</th>
-                <th>Confirm Password</th>
-                <th>Action</th>
+                <th>Role Name</th>
 
             </tr>
         </thead>
         <tbody>
-            {% for i in executives %}
+            {% for i in roles %}
             <tr>
                 <td>{{i.id}}</td>
-                <td>{{i.ex_name}}</td>
-                <td>{{i.manager_name }}</td>
-                <td>{{i.branch_list.branch_name}}</td>
-                <td>{{i.username }}</td>
-                <td>***********</td>
-                <td>***********</td>
 
-                <td>
-                  <a href="#editcl_ExecutiveModal-{{i.id}}" class="edit" data-toggle="modal"><i
-                       class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                      
-             </td>                
+                <td>{{i.role_name }}</td>
+               
 
                
             </tr>
@@ -234,152 +221,34 @@ body {
         </tbody>
     </table>
 
-
-
-  <!-- Add Executive -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title" id="exampleModalLabel">Add Executive </h4>
-          <button type="button" class="close" data-dismiss="modal"  aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-      
-        <div class="modal-body">
-          <form action="{% url 'add_executive' %}" method="post">
-            {% csrf_token %}
-           
-            <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
-              <div class="form-group">
-                  <label>Executive Name</label>
-                  <input name="ex_name" type="text" class="form-control" required />
     
-                </div>
+  <div id="addRoleModal" class="modal fade">
+    <div class="modal-dialog">
+      <div class="modal-content" style="width: 700px; position: relative; right: 11%; bottom: 50%;">
+        <form action="{% url 'add_role' %}" method="post">
+          {% csrf_token %}
+          <div class="modal-header">
+            <h4 class="modal-title">Add Role</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          </div>
+          <div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
+            <div class="form-group">
+                <label>Role Name</label>
+                <input name="role_name" type="text" class="form-control" required />
   
-                
-                  <div class="form-group">
-                      <label class="control-label"><b> Branch : </b><span
-                              class="text-danger">*</span></label>
-                      <select class="form-control" id ="branch" name="branch_list">
-                          <option selected>Select Branch</option>
-                          {% for i in rm1 %}
-                          <option value="{{ i.branch_list }}">{{ i.branch_list}}</option>
-                          {% endfor %}
-                      </select>
-                  </div>
-                  <div class="form-group">
-                    <label class="control-label"><b> Manager : </b><span
-                            class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="manageri_name" name="manager_name">
-                </div>
-                <div class="form-group">
-                  <label>Username Name</label>
-                  <input name="username" type="text" class="form-control" required />
-    
-                </div>
-                
-                <div class="form-group">
-                  <label for="password">Password:</label>
-                  <input type="password" id="password" name="password">
-                </div>
-                <div class="form-group">
-                  <label for="confirm_password">Confirm Password:</label>
-                  <input type="password" id="password" name="password">
-  
-                </div>
-            
-
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <input type="submit" class="btn btn-success" value="Add">
-        </div>
-    </form>
+              </div>
+              
+              
+          <div class="modal-footer">
+            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+            <input type="submit" class="btn btn-success" value="Add">
+          </div>
+        </form>
       </div>
     </div>
   </div>
 </div>
-</div>
-
-  
-
-{% comment %} Edit For Executive {% endcomment %}
-
-{% for i in executives %}
-
-<div id="editcl_ExecutiveModal-{{i.id}}" class="modal fade">
-  <div class="modal-dialog">
-      <div class="modal-content">
-        <form action="/update_executive/{{i.id}}" method="post">
-          {% csrf_token %}
-          <div class="modal-header">
-              <h4 class="modal-title">Edit Branch</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          </div>
-          <div class="modal-body">
-              <label>ID</label>
-              <input name="id" value="{{i.id}}" type="text" class="form-control">
-          </div>
-          <div class="modal-body">
-          <label>Executive Name</label>
-          <input name="ex_name" type="text" value="{{i.ex_name}}"   class="form-control" required />
-
-        </div>
-          
-         <div class="modal-body">
-          <span class="required-field"></span><label>Branch:<a href="{% url 'branch_list' %}">
-            <span style="display: inline;"></span>
-          </a></label>
-          <select class="form-control" id ="branch" name="branch_list">
-            <option selected>Select Branch</option>
-            {% for i in rm1 %}
-            <option value="{{ i.branch_list }}">{{ i.branch_list}}</option>
-            {% endfor %}
-          </select>
-          </div>
-
-          <div class="modal-body">
-            <label class="control-label"><b> Manager : </b><span
-                    class="text-danger"></span></label>
-                <input type="text" class="form-control" id="manageri_name"   value="{{i.manager_name}}"  name="manager_name">
-          </div>
-          <div class="modal-body">
-            <label>Username Name</label>
-            <input name="username"  type="text"  value="{{i.username}}"  class="form-control" required />
-
-          </div>
-       
-          <div class="modal-body">
-            <label for="password">Password:</label>
-            <input type="password" id="password"  value="{{i.password}}"  name="password">
-          </div>
-          <div class="modal-footer">
-              <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-              <input type="submit" class="btn btn-success" value="Update">
-          </div>
-      </form>
-  </div>
-  </div>
-</div>
-{% endfor  %} 
-
-  <script>
-    const branchibranch = document.getElementById('branch');
-    const branchimanager_name = document.getElementById('manageri_name');
-
-    branchibranch.addEventListener('change', () => {
-      const selectedUser = branchibranch.value;
-      fetch(`/get_branch_info/${selectedUser}`)
-        .then(response => response.json())
-        .then(data => {
-          branchimanager_name.value = data.manager;
-        });
-    });
-
-
-</script>
-    
+</body>
     
 
 <!-- Search Data -->
@@ -425,22 +294,22 @@ body {
  });
 </script>
 
+
+
 <!-- Navbar  -->
 <script>
-  var menu_btn = document.querySelector("#menu-btn");
-var sidebar = document.querySelector("#sidebar");
-var container = document.querySelector(".my-container");
-menu_btn.addEventListener("click", () => {
-  sidebar.classList.toggle("active-nav");
-  container.classList.toggle("active-cont");
-});
-
-</script>
-
-
-
-
-
-
+    var menu_btn = document.querySelector("#menu-btn");
+  var sidebar = document.querySelector("#sidebar");
+  var container = document.querySelector(".my-container");
+  menu_btn.addEventListener("click", () => {
+    sidebar.classList.toggle("active-nav");
+    container.classList.toggle("active-cont");
+  });
+  
+  </script>
+  
 </body>
+
+
+
 </html>

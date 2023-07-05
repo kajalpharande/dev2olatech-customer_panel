@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Customer Data</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto%7CVarela+Round">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
+  <script src="../../../static/js/demo.js"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+  <!-- pagination -->
+  <link rel="stylesheet" type="text/css" href="{% static 'customer.css' %}">
+  <link rel="stylesheet" href="https://cdn.datatables.net/datetime/1.4.0/css/dataTables.dateTime.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+
+  <script src="//code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <script src="//cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.2/moment.min.js"></script>
+  <script src="//cdn.datatables.net/datetime/1.4.0/js/dataTables.dateTime.min.js"></script>
+
+</head>
+<body>
+  <br><br>
+  <div class="text-right">  <button type="button" class="btn btn-info dropdown-toggle" data-bs-toggle="dropdown"
+    aria-expanded="false">
+    Hello, {{ request.session.username }}
+  </button>
+
+<a href="{% url 'logout' %}" class="btn btn-primary" data-toggle="modal"><i class="material-icons"></i>
+    <span>Logout</span></a>
+  
+</div>
+  
+  
+    <h2 style="text-align: center ; color: chocolate;">Manager List</h2>
+    <table class="table table-striped" id="table">
+        <thead>
+            <tr id="{{customer.id}}">
+                <th>Manager Name</th>
+                <th>Branch Name</th>
+                <th>Executive Name</th>
+                <th>Company Name</th>
+                <th>Type of Client</th>
+                <th>Name</th>
+                <th>Contact Detail</th>
+                <th>Mail ID</th>
+                <!-- <th>Nature of Business</th> -->
+                <th>Meeting Date</th>
+                <!-- <th>Status of Client</th> -->
+                <th>Next Meeting Date</th>
+                <!-- <th>Package Sold</th> -->
+                <th>Amount</th>
+                <th>Activation Date</th>
+                <th>Renewal Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for customer in rm1 %}
+            <tr>                
+                <td><a style="color: black;"  href="{% url 'customer_detail' customer.id %}">{{ customer.manager_name }}</a></td>
+                <td><a style="color: black;"  href="{% url 'customer_detail' customer.id %}">{{ customer.branch_list}}</a></td>
+
+                <td><a style="color: black;"  href="{% url 'customer_detail' customer.id %}">{{ customer.ex_name}}</a></td>
+              
+                <td><a style="color: black;"  href="{% url 'customer_detail' customer.id %}">{{ customer.company_name }}</a></td>
+                <td><a style="color: black;"  href="{% url 'customer_detail' customer.id %}">{{ customer.get_type_of_client_display }}</a></td>
+                <td><a style="color: black;"  href="{% url 'customer_detail' customer.id %}">{{ customer.name }}</a></td>
+                <td><a style="color: black;"  href="{% url 'customer_detail' customer.id %}">{{ customer.contact_detail }}</a></td>
+                <td><a style="color: black;"  href="{% url 'customer_detail' customer.id %}">{{ customer.mail_id }}</a></td>
+                <!-- <td>{{ customer.get_nature_of_business_display }}</td> -->
+                <td><a style="color: black;"  href="{% url 'customer_detail' customer.id %}">{{ customer.meeting_date }}</a></td>
+                <td><a style="color: black;"  href="{% url 'customer_detail' customer.id %}">{{ customer.next_meeting_date }}</a></td>
+                <!-- <td>{{ customer.package_sold }}</td> -->
+                <td><a style="color: black;"  href="{% url 'customer_detail' customer.id %}">{{ customer.amount }}</a></td>
+                <td><a style="color: black;"  href="{% url 'customer_detail' customer.id %}">{{ customer.activation_date }}</a></td>
+                <td><a style="color: black;"  href="{% url 'customer_detail' customer.id %}">{{ customer.renewal_date }}</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+      var minDate, maxDate;
+   
+   // Custom filtering function which will search data in column four between two values
+   $.fn.dataTable.ext.search.push(
+       function( settings, data, dataIndex ) {
+           var min = minDate.val();
+           var max = maxDate.val();
+           var date = new Date( data[7] );
+    
+           if (
+               ( min === null && max === null ) ||
+               ( min === null && date <= max ) ||
+               ( min <= date   && max === null ) ||
+               ( min <= date   && date <= max )
+           ) {
+               return true;
+           }
+           return false;
+       }
+   );
+    
+   $(document).ready(function() {
+       minDate = new DateTime($('#min'), {
+           format: 'MMMM Do YYYY'
+       });
+       maxDate = new DateTime($('#max'), {
+           format: 'MMMM Do YYYY'
+       });
+    
+       var table = $('#table').DataTable();
+    
+       $('#min, #max').on('change', function () {
+           table.draw();
+       });
+   });
+  </script>
+  <script>
+    var menu_btn = document.querySelector("#menu-btn");
+  var sidebar = document.querySelector("#sidebar");
+  var container = document.querySelector(".my-container");
+  menu_btn.addEventListener("click", () => {
+    sidebar.classList.toggle("active-nav");
+    container.classList.toggle("active-cont");
+  });
+  
+  </script>
+  
+</body>
+</html>
+
+
+
+

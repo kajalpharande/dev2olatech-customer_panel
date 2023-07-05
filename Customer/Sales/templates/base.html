@@ -31,25 +31,395 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.2/moment.min.js"></script>
     <script src="//cdn.datatables.net/datetime/1.4.0/js/dataTables.dateTime.min.js"></script>
 
-<!-- 
-    <div class="container">
-        <div class="row">
-            <div class="text-right">
+  <!-- navbar link -->
 
-            </div>
-        </div>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bootstrap 5 Side Bar Navigation</title>
+  <!-- bootstrap 5 css -->
+  <!-- BOX ICONS CSS-->
+  <link href="https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css" rel="stylesheet" />
+  <!-- custom css -->
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
 
-    </div> -->
+
 
 <style>
   a {
     color:black;
   }
 </style>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    min-height: 100vh;
+    background-color: #fff;
+  }
+  
+  .side-navbar {
+    width: 250px;
+    height: 100%;
+    position: fixed;
+    margin-left: -300px;
+    background-color:#c6d6e9;
+    transition: 0.5s;
+  }
+  
+  .nav-link:active,
+  .nav-link:focus,
+  .nav-link:hover {
+    background-color: #ffffff26;
+  }
+  
+  .my-container {
+    transition: 0.4s;
+  }
+  
+  .active-nav {
+    margin-left: 0;
+  }
+  
+  /* for main section */
+  .active-cont {
+    margin-left: 250px;
+  }
+  
+  #menu-btn {
+    background-color: #100901;
+    color: #fff;
+  
+  }
+  
+  .my-container input {
+    border-radius: 2rem;
+    padding: 2px 20px;
+  }
+  
+</style>
 
 </head>
 
 <body>
+
+  <!-- Side-Nav -->
+  <div class="side-navbar active-nav d-flex justify-content-between flex-wrap flex-column" id="sidebar">
+    <ul class="nav flex-column text-white w-100"><br><br><br><br>
+
+      <a href="{% url 'customer_list' %}" class="nav-link h3 text-white my-2">
+     
+      
+      <li  class="nav-link">
+        <i class="bx bxs-dashboard"></i>
+        <span class="mx-2">Sales Lead</span>
+      </li>
+    </a><br>
+    <a href="{% url 'branch_list' %}" class="nav-link h3 text-white my-2">
+     
+      
+      <li  class="nav-link">
+        <i class="bx bxs-dashboard"></i>
+        <span class="mx-2">Branch</span>
+      </li>
+    </a><br>
+    <a href="{% url 'manager_list' %}" class="nav-link h3 text-white my-2">
+     
+      
+      <li  class="nav-link">
+        <i class="bx bx-user-check"></i>
+        <span class="mx-2">Manager</span>
+      </li>
+    </a><br>
+    <a href="{% url 'executive_list' %}" class="nav-link h3 text-white my-2">
+   
+    
+      <li  class="nav-link">
+        <i class="bx bx-conversation"></i>
+        <span class="mx-2">Executive</span>
+      </li>
+    </a><br>
+    <a href="{% url 'user_list' %}" class="nav-link h3 text-white my-2">
+       
+        
+      <li  class="nav-link">
+        <i class="bx bxs-user"></i>
+        <span class="mx-2">Users</span>
+      </li>
+    </a><br>
+    <a href="{% url 'role_display' %}" class="nav-link h3 text-white my-2">
+     
+      
+      <li  class="nav-link">
+        <i class="bx bxl-instagram-alt"></i>
+        <span class="mx-2">Role</span>
+      </li>
+    </a>
+     <br>
+
+  </div><br>
+  <!-- Main Wrapper -->
+  <div class="my-container active-cont">
+    <!-- Top Nav -->
+    <nav class="navbar top-navbar navbar-light bg-light px-5">
+      <a class="btn border-0" id="menu-btn"><i class="bx bx-menu"></i></a>
+    </nav>
+    <!-- Table Content Start -->
+  <div class="text-right">  <button type="button" class="btn btn-info dropdown-toggle" data-bs-toggle="dropdown"
+    aria-expanded="false">
+    Hello, {{ request.session.username }}
+  </button>
+<!-- <a href="#addCustomerModal" class="btn btn-success" data-toggle="modal"><i class="material-icons"></i>
+<span>Add </span></a> -->
+<!-- <button type="submit" id="delete_btn" class="btn btn-danger">Delete</button> -->
+<a href="{% url 'logout' %}" class="btn btn-primary" data-toggle="modal"><i class="material-icons"></i>
+    <span>Logout</span></a>
+  
+</div>
+
+<!-- 
+<table border="0" cellspacing="5" cellpadding="5">
+<tbody><tr>
+<td>Minimum date:</td>
+<td><input type="text" id="min" name="min"></td>
+</tr>
+<tr>
+<td>Maximum date:</td>
+<td><input type="text" id="max" name="max"></td>
+</tr>
+</tbody></table> -->
+
+<br><br>
+<table class="table table-striped table-hover table-responsive" id="table">
+<thead>
+<tr style="background-color:rgb(198, 214, 233);color:rgb(18, 16, 16);">
+    <th>
+        <span class="custom-checkbox">
+            <input type="checkbox" id="selectAll">
+            <label for="selectAll"></label>
+        </span>
+    </th>
+    <th>ID</th>
+    <th>Branch Name</th>
+    <th>Manager Name</th>
+    <th>Executive Name</th>
+    <th>Company Name</th>
+    <th>Type of Client</th>
+    <th>Name</th>
+    <th>Contact Detail</th>
+    <th>Mail ID</th>
+    <!-- <th>Nature of Business</th> -->
+    <th>Meeting Date</th>
+    <!-- <th>Status of Client</th> -->
+    <th>Next Meeting Date</th>
+    <!-- <th>Package Sold</th> -->
+    <th>Amount</th>
+    <th>Activation Date</th>
+    <th>Renewal Date</th>
+    <!-- <th>Action</th> -->
+
+</tr>
+</thead>
+<tbody>
+{% for customer in customers %}
+<tr id="{{customer.id}}">
+    <td>
+        <input type="checkbox" name="change_id[]" id="delete_product" value="{{customer.id}}">
+
+    </td>
+    <td><a style="color: black;"  href="{% url 'customer_detail' customer.id %}">{{ customer.id}}</a></td>
+    <td><a style="color: black;" href="{% url 'customer_detail' customer.id %}">{{ customer.branch_list }}</a></td>
+    <td><a style="color: black;" href="{% url 'customer_detail' customer.id %}">{{ customer.manager_name }}</a></td>
+    <td><a style="color: black;" href="{% url 'customer_detail' customer.id %}">{{ customer.ex_name }}</a></td>
+
+    <td><a style="color: black;" href="{% url 'customer_detail' customer.id %}">{{ customer.company_name }}</a></td>
+    <td><a style="color: black;" href="{% url 'customer_detail' customer.id %}">{{ customer.type_of_client }}</a></td>
+    <td><a style="color: black;" href="{% url 'customer_detail' customer.id %}">{{ customer.name }}</a></td>
+    <td><a style="color: black;" href="{% url 'customer_detail' customer.id %}">{{ customer.contact_detail }}</a></td>
+    <td><a style="color: black;" href="{% url 'customer_detail' customer.id %}">{{ customer.mail_id }}</a></td>
+    <!-- <td><a style="color: black;" href="{% url 'customer_detail' customer.id %}">{{ customer.nature_of_business }}</a></td> -->
+    <td><a style="color: black;" href="{% url 'customer_detail' customer.id %}">{{ customer.meeting_date }}</a></td>
+    <!-- <td><a style="color: black;" href="{% url 'customer_detail' customer.id %}">{{ customer.status_of_client }}</a></td> -->
+    <td><a style="color: black;" href="{% url 'customer_detail' customer.id %}">{{ customer.next_meeting_date }}</a></td>
+    <!-- <td><a style="color: black;" href="{% url 'customer_detail' customer.id %}">{{ customer.package_sold }}</a></td> -->
+    <td><a style="color: black;" href="{% url 'customer_detail' customer.id %}">{{ customer.amount }}</a></td>
+    <td><a style="color: black;" href="{% url 'customer_detail' customer.id %}">{{ customer.activation_date }}</a></td>
+    <td><a style="color: black;" href="{% url 'customer_detail' customer.id %}">{{ customer.renewal_date }}</a></td>
+    <!-- <td>
+        <a href="#editCustomerModal-{{customer.id}}" class="edit" data-toggle="modal"><i
+                class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+    </td>             -->
+</tr>
+{% endfor %}
+</tbody>
+</table>
+
+
+<div id="addCustomerModal" class="modal fade">
+<div class="modal-dialog">
+<div class="modal-content" style="width: 700px; position: relative; right: 11%; bottom: 50%;">
+<form action="{% url 'add' %}" method="post">
+{% csrf_token %}
+<div class="modal-header">
+<h4 class="modal-title">Add Customer</h4>
+<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+</div>
+<div class="modal-body" style="width: 330px; padding-left: 30px; display: inline-block;">
+  <div class="form-group">
+    <label>Branch Name</label>
+    <select name="branch_name"  type="text" class="form-control" aria-label="Default select example"
+    aria-invalid="false">
+    <option value="">Select Option</option>
+
+        {% for i in branches %}
+        <option value="{{i.branch_name}}"> {{i.branch_name}}</option>
+        {% endfor %}
+    </select>
+
+
+  </div>
+  <div class="form-group">
+    <label>Manager Name</label>
+    <select name="manager_name" type="text" class="form-control" aria-label="Default select example"
+    aria-invalid="false">
+    <option value="">Select Option</option>
+
+        {% for i in rm1 %}
+        <option value="{{i.manager_name}}"> {{i.manager_name}}</option>
+        {% endfor %}
+    </select>
+
+
+  </div>
+  <div class="form-group">
+    <label>Executive  Name</label>
+    <select name="ex_name"  type="text" class="form-control" aria-label="Default select example"
+    aria-invalid="false">
+    <option value="">Select Option</option>
+
+        {% for i in executives %}
+        <option value="{{i.ex_name}}"> {{i.ex_name}}</option>
+        {% endfor %}
+    </select>
+
+
+  </div>
+<div class="form-group">
+    <label>Company Name</label>
+    <input name="company_name" type="text" class="form-control" required />
+
+  </div>
+  <div class="form-group">
+    <label>Type of Client </label>
+    <select name="type_of_client" type="text" class="form-control" aria-label="Default select example"
+      aria-invalid="false">
+      <option value="">Select Option</option>
+
+      <option value="New Client">New Client</option>
+      <option value="Existing Client">Existing Client</option>
+      <option value="Decline Client">Decline Client</option>
+      <option value="PO Recieved">PO Recieved</option>
+
+    </select>
+  </div>
+  <div class="form-group">
+    <label>Name</label>
+    <input name="name" type="text" class="form-control" required>
+
+  
+  </div>
+  <div class="form-group">
+    <label>Contact Detail</label>
+    <input name="contact_detail" type="text" class="form-control">
+  </div>
+ 
+  
+</div>
+
+
+<div class="modal-body" style="width: 330px; display: inline-block; position: relative; bottom: 70px;">
+  <div class="form-group">
+    <label>Mail ID</label>
+    <input name="mail_id" type="text" class="form-control">
+  </div>
+  <div class="form-group">
+    <label for="bday">Meeting Date</label>
+    <input class="form-control" type="date" id="dt_start_date" name="meeting_date" required
+      pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
+    <span class="validity"></span>
+  </div>
+  <div class="form-group">
+    <label for="bday">Next Meeting Date</label>
+    <input class="form-control" type="date" id="dt_end_date" name="next_meeting_date" required
+      pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
+    <span class="validity"></span>
+  </div>
+<!--start of right half -->
+
+  <!-- <div class="form-group">
+
+    <label>Nature of Business</label>
+    <select name="nature_of_business" type="text" class="form-control" aria-label="Default select example"
+    aria-invalid="false">
+    <option value="">Select Option</option>
+
+    <option value="Manufacturer">Manufacturer</option>
+    <option value="Supplier">supplier</option>
+    <option value="Trader">Trader</option>
+    <option value="Retail">Retail</option>
+
+    </select>            
+  </div> -->
+  <!-- <div class="form-group">
+    <label>Status of Client</label>
+    <select name="status_of_client" type="text" class="form-control" aria-label="Default select example"
+    aria-invalid="false">
+    <option value="">Select Option</option>
+
+    <option value="Prospect">Prospect</option>
+    <option value="Hot Prospect">Hot Prospect</option>
+    <option value="Not Interested">Not Interested</option>
+
+    </select>    
+  </div> -->
+  <!-- <div class="form-group">
+    <label>Package Sold</label>
+    <input name="package_sold" type="text" class="form-control">
+  </div> -->
+  <div class="form-group">
+    <label>Amount</label>
+    <input name="amount" type="text" class="form-control">
+  </div>
+      <div class="form-group">
+    <label for="bday">Activation Date</label>
+    <input class="form-control" type="date" id="dt_start_date" name="activation_date" required
+      pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
+    <span class="validity"></span>
+  </div>
+  <div class="form-group">
+    <label for="bday">Renewal Date</label>
+    <input class="form-control" type="date" id="dt_end_date" name="renewal_date" required
+      pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}">
+    <span class="validity"></span>
+  </div>
+ 
+</div>
+<div class="modal-footer">
+<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+<input type="submit" class="btn btn-success" value="Add">
+</div>
+</form>
+</div>
+</div>
+</div>
+
+<!-- 
+
+</div>
     <br>
     <br>
 <br>
@@ -65,7 +435,7 @@
               
     </div>
 
-<!-- 
+
     <table border="0" cellspacing="5" cellpadding="5">
         <tbody><tr>
             <td>Minimum date:</td>
@@ -76,7 +446,7 @@
             <td><input type="text" id="max" name="max"></td>
         </tr>
     </tbody></table> -->
-
+<!-- 
     <br><br>
     <table class="table table-striped table-hover" id="table">
         <thead>
@@ -101,7 +471,6 @@
                 <th>Amount</th>
                 <th>Activation Date</th>
                 <th>Renewal Date</th>
-                <!-- <th>Action</th> -->
 
             </tr>
         </thead>
@@ -127,10 +496,7 @@
                 <td><a style="color: black;" href="{% url 'customer_detail' customer.id %}">{{ customer.amount }}</a></td>
                 <td><a style="color: black;" href="{% url 'customer_detail' customer.id %}">{{ customer.activation_date }}</a></td>
                 <td><a style="color: black;" href="{% url 'customer_detail' customer.id %}">{{ customer.renewal_date }}</a></td>
-                <!-- <td>
-                    <a href="#editCustomerModal-{{customer.id}}" class="edit" data-toggle="modal"><i
-                            class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                </td>             -->
+               
             </tr>
             {% endfor %}
         </tbody>
@@ -195,7 +561,7 @@
 
 
           <div class="modal-body" style="width: 330px; display: inline-block; position: relative; bottom: 70px;">
-            <!--start of right half -->
+           
 
               <div class="form-group">
   
@@ -252,13 +618,13 @@
         </form>
       </div>
     </div>
-  </div>
+  </div> -->
 
     
     
 
     <!-- Delete Customer -->
-    <script>
+     <script>
         $(document).ready(function () {
           $('#delete_btn').click(function () {
             if (confirm('Are You Sure You Want to Delete User?')) {
@@ -267,7 +633,6 @@
               $(':checkbox:checked').each(function (i) {
                 id[i] = $(this).val()
               })
-              // console.log(id.length)
               if (id.length === 0) {
                 alert("please select user Which u want to delete?")
               } else {
@@ -311,7 +676,6 @@
           }
         }); 
       </script>
-<!-- Search Data -->
 
 <script>
     var minDate, maxDate;
@@ -336,7 +700,6 @@
  );
   
  $(document).ready(function() {
-     // Create date inputs
      minDate = new DateTime($('#min'), {
          format: 'MMMM Do YYYY'
      });
@@ -344,14 +707,22 @@
          format: 'MMMM Do YYYY'
      });
   
-     // DataTables initialisation
      var table = $('#table').DataTable();
   
-     // Refilter the table
      $('#min, #max').on('change', function () {
          table.draw();
      });
  });
+</script>
+<script>
+  var menu_btn = document.querySelector("#menu-btn");
+var sidebar = document.querySelector("#sidebar");
+var container = document.querySelector(".my-container");
+menu_btn.addEventListener("click", () => {
+  sidebar.classList.toggle("active-nav");
+  container.classList.toggle("active-cont");
+});
+
 </script>
 
 </body>
@@ -359,3 +730,8 @@
 
 
 </html>
+
+
+
+
+

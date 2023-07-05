@@ -106,9 +106,11 @@ body {
 
 <body>
 
+<!-- Side-Nav -->
 <div class="side-navbar active-nav d-flex justify-content-between flex-wrap flex-column" id="sidebar">
   <ul class="nav flex-column text-white w-100"><br><br><br><br>
-<a href="{% url 'customer_list' %}" class="nav-link h3 text-white my-2">
+
+    <!-- <a href="{% url 'customer_list' %}" class="nav-link h3 text-white my-2">
    
     
     <li  class="nav-link">
@@ -129,9 +131,9 @@ body {
     
     <li  class="nav-link">
       <i class="bx bx-user-check"></i>
-      <span class="mx-2">Manager</span>
+      <span class="mx-2">RM</span>
     </li>
-  </a><br> 
+  </a><br> -->
   <a href="{% url 'executive_list' %}" class="nav-link h3 text-white my-2">
    
     
@@ -140,7 +142,7 @@ body {
       <span class="mx-2">Executive</span>
     </li>
   </a><br>
-  <a href="{% url 'user_list' %}" class="nav-link h3 text-white my-2">
+  <!-- <a href="{% url 'user_list' %}" class="nav-link h3 text-white my-2">
      
       
     <li  class="nav-link">
@@ -155,14 +157,10 @@ body {
       <i class="bx bxl-instagram-alt"></i>
       <span class="mx-2">Role</span>
     </li>
-  </a>
+  </a> -->
    <br>
 
-  <span href="#" class="nav-link h4 w-100 mb-5">
-    <a href=""><i class="bx bxl-instagram-alt text-white"></i></a>
-    <a href=""><i class="bx bxl-twitter px-2 text-white"></i></a>
-    <a href=""><i class="bx bxl-facebook text-white"></i></a>
-  </span>
+ 
 </div><br>
 <!-- Main Wrapper -->
 <div class="my-container active-cont">
@@ -179,8 +177,6 @@ body {
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
               Add 
             </button>
-            <a href="{% url 'logout' %}" class="btn btn-primary" data-toggle="modal"><i class="material-icons"></i>
-              <span>Logout</span></a>
     </div>
 
 <!-- 
@@ -204,9 +200,6 @@ body {
                 <th>Executive Name</th>
                 <th>Manager Name</th>
                 <th>Branch</th>
-                <th>Username</th>
-                <th>Password</th>
-                <th>Confirm Password</th>
                 <th>Action</th>
 
             </tr>
@@ -218,10 +211,6 @@ body {
                 <td>{{i.ex_name}}</td>
                 <td>{{i.manager_name }}</td>
                 <td>{{i.branch_list.branch_name}}</td>
-                <td>{{i.username }}</td>
-                <td>***********</td>
-                <td>***********</td>
-
                 <td>
                   <a href="#editcl_ExecutiveModal-{{i.id}}" class="edit" data-toggle="modal"><i
                        class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
@@ -237,7 +226,7 @@ body {
 
 
   <!-- Add Executive -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <!-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -270,24 +259,9 @@ body {
                       </select>
                   </div>
                   <div class="form-group">
-                    <label class="control-label"><b> Manager : </b><span
+                    <label class="control-label"><b> RM : </b><span
                             class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="manageri_name" name="manager_name">
-                </div>
-                <div class="form-group">
-                  <label>Username Name</label>
-                  <input name="username" type="text" class="form-control" required />
-    
-                </div>
-                
-                <div class="form-group">
-                  <label for="password">Password:</label>
-                  <input type="password" id="password" name="password">
-                </div>
-                <div class="form-group">
-                  <label for="confirm_password">Confirm Password:</label>
-                  <input type="password" id="password" name="password">
-  
+                        <input type="text" class="form-control" id="manager_name" name=ranagemanager_name">
                 </div>
             
 
@@ -298,15 +272,13 @@ body {
     </form>
       </div>
     </div>
-  </div>
-</div>
-</div>
+  </div> -->
 
-  
 
-{% comment %} Edit For Executive {% endcomment %}
+ 
 
-{% for i in executives %}
+  {% for i in executives %}
+
 
 <div id="editcl_ExecutiveModal-{{i.id}}" class="modal fade">
   <div class="modal-dialog">
@@ -339,20 +311,13 @@ body {
           </select>
           </div>
 
+
+
+
           <div class="modal-body">
             <label class="control-label"><b> Manager : </b><span
                     class="text-danger"></span></label>
-                <input type="text" class="form-control" id="manageri_name"   value="{{i.manager_name}}"  name="manager_name">
-          </div>
-          <div class="modal-body">
-            <label>Username Name</label>
-            <input name="username"  type="text"  value="{{i.username}}"  class="form-control" required />
-
-          </div>
-       
-          <div class="modal-body">
-            <label for="password">Password:</label>
-            <input type="password" id="password"  value="{{i.password}}"  name="password">
+                <input type="text" class="form-control" id="manager_name"   value="{{i.manager_name}}"  name="manager_name">
           </div>
           <div class="modal-footer">
               <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
@@ -362,18 +327,21 @@ body {
   </div>
   </div>
 </div>
-{% endfor  %} 
+{% endfor  %}
+
+
+
 
   <script>
     const branchibranch = document.getElementById('branch');
-    const branchimanager_name = document.getElementById('manageri_name');
+    const branchranagemanager_name = document.getElementById('manager_name');
 
     branchibranch.addEventListener('change', () => {
       const selectedUser = branchibranch.value;
       fetch(`/get_branch_info/${selectedUser}`)
         .then(response => response.json())
         .then(data => {
-          branchimanager_name.value = data.manager;
+          branchranagemanager_name.value = data.rm;
         });
     });
 
